@@ -10,17 +10,34 @@ import {
     HiOutlineCheckCircle,
     HiOutlineExclamationCircle,
     HiOutlineDownload,
+    HiOutlineMail,
 } from 'react-icons/hi';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import API from '../utils/api';
+import toast from 'react-hot-toast';
 
 const Results = () => {
     const { id } = useParams();
     const [interview, setInterview] = useState(null);
     const [loading, setLoading] = useState(true);
     const [downloading, setDownloading] = useState(false);
+    const [emailing, setEmailing] = useState(false);
     const resultsRef = useRef(null);
+
+    const handleEmailResults = async () => {
+        setEmailing(true);
+        try {
+            const res = await API.post(`/interview/${id}/email`);
+            if (res.data.success) {
+                toast.success('Results sent to your email! 📧');
+            }
+        } catch (err) {
+            toast.error(err.response?.data?.message || 'Failed to send email');
+        } finally {
+            setEmailing(false);
+        }
+    };
 
     const handleDownloadPDF = async () => {
         if (!resultsRef.current) return;
@@ -297,10 +314,24 @@ const Results = () => {
                 </div>
 
                 {/* Actions */}
-                <div className="flex gap-4 justify-center mt-8">
+                <div className="flex gap-4 justify-center flex-wrap mt-8">
                     <Link to="/dashboard">
                         <button className="btn-secondary">Back to Dashboard</button>
                     </Link>
+                    <motion.button
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        className="btn-secondary"
+                        onClick={handleEmailResults}
+                        disabled={emailing}
+                        style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+                    >
+                        {emailing ? (
+                            <><div className="spinner" style={{ width: '16px', height: '16px', borderWidth: '2px' }} /> Sending...</>
+                        ) : (
+                            <><HiOutlineMail size={16} /> Email Results</>
+                        )}
+                    </motion.button>
                     <Link to="/dashboard">
                         <button className="btn-primary">Start New Interview</button>
                     </Link>

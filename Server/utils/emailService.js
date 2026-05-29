@@ -1,0 +1,108 @@
+import nodemailer from 'nodemailer';
+
+// Create reusable transporter — uses Gmail by default
+// For production, use a dedicated email service (SendGrid, Mailgun, etc.)
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS, // Gmail App Password (not regular password)
+    },
+});
+
+/**
+ * Send interview results via email
+ */
+export const sendResultsEmail = async (toEmail, userName, interview) => {
+    const scoreColor = interview.overallScore >= 70 ? '#10b981' : interview.overallScore >= 40 ? '#f59e0b' : '#ef4444';
+    const scoreLabel = interview.overallScore >= 70 ? 'Excellent' : interview.overallScore >= 40 ? 'Good' : 'Needs Improvement';
+
+    const questionsHTML = interview.questions
+        .filter(q => q.answer)
+        .map((q, i) => `
+            <tr>
+                <td style="padding: 12px; border-bottom: 1px solid #eee;">
+                    <strong>Q${i + 1}.</strong> ${q.question}<br/>
+                    <span style="color: #666; font-size: 13px;">Your Answer: ${q.answer}</span><br/>
+                    <span style="color: ${q.score >= 7 ? '#10b981' : q.score >= 4 ? '#f59e0b' : '#ef4444'}; font-weight: bold;">
+                        Score: ${q.score}/10
+                    </span>
+                    ${q.feedback ? `<br/><span style="color: #888; font-size: 12px;">💡 ${q.feedback}</span>` : ''}
+                </td>
+            </tr>
+        `).join('');
+
+    const html = `
+    <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f8fafc; padding: 0;">
+        <!-- Header -->
+        <div style="background: linear-gradient(135deg, #6366f1, #8b5cf6); padding: 32px 24px; text-align: center; border-radius: 8px 8px 0 0;">
+            <h1 style="color: white; margin: 0; font-size: 24px;">🤖 InterviewIQ</h1>
+            <p style="color: rgba(255,255,255,0.85); margin: 8px 0 0; font-size: 14px;">Interview Results Report</p>
+        </div>
+
+        <div style="background: white; padding: 32px 24px; border-radius: 0 0 8px 8px;">
+            <!-- Greeting -->
+            <p style="font-size: 16px; color: #333;">Hi <strong>${userName}</strong>,</p>
+            <p style="color: #666; font-size: 14px;">Here are your interview results for <strong>${interview.jobRole}</strong>.</p>
+
+            <!-- Score Card -->
+            <div style="text-align: center; padding: 24px; margin: 20px 0; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
+                <div style="font-size: 48px; font-weight: 800; color: ${scoreColor};">${interview.overallScore}</div>
+                <div style="font-size: 13px; color: #94a3b8;">out of 100</div>
+                <div style="display: inline-block; margin-top: 8px; padding: 4px 16px; border-radius: 20px; background: ${scoreColor}15; color: ${scoreColor}; font-weight: 600; font-size: 13px;">
+                    ${scoreLabel}
+                </div>
+            </div>
+
+            <!-- Feedback -->
+            ${interview.overallFeedback ? `
+                <div style="margin: 20px 0;">
+                    <h3 style="color: #333; font-size: 15px; margin-bottom: 8px;">📊 Overall Feedback</h3>
+                    <p style="color: #666; font-size: 13px; line-height: 1.7;">${interview.overallFeedback}</p>
+                </div>
+            ` : ''}
+
+            <!-- Strengths & Improvements -->
+            <div style="display: flex; gap: 16px; margin: 20px 0;">
+                ${interview.strengths?.length ? `
+                    <div style="flex: 1;">
+                        <h4 style="color: #10b981; font-size: 13px;">✅ Strengths</h4>
+                        <ul style="padding-left: 18px; color: #666; font-size: 13px; line-height: 1.8;">
+                            ${interview.strengths.map(s => `<li>${s}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
+                ${interview.improvements?.length ? `
+                    <div style="flex: 1;">
+                        <h4 style="color: #f59e0b; font-size: 13px;">📈 Areas to Improve</h4>
+                        <ul style="padding-left: 18px; color: #666; font-size: 13px; line-height: 1.8;">
+                            ${interview.improvements.map(s => `<li>${s}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
+            </div>
+
+            <!-- Questions -->
+            <h3 style="color: #333; font-size: 15px; margin: 24px 0 12px;">📝 Question-by-Question Review</h3>
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                ${questionsHTML}
+            </table>
+
+            <!-- Footer -->
+            <div style="margin-top: 32px; padding-top: 16px; border-top: 1px solid #e2e8f0; text-align: center;">
+                <p style="color: #94a3b8; font-size: 12px;">
+                    Generated by InterviewIQ — AI Interview Preparation Platform<br/>
+                    Keep practicing to improve your scores! 🚀
+                </p>
+            </div>
+        </div>
+    </div>
+    `;
+
+    await transporter.sendMail({
+        from: `"InterviewIQ" <${process.env.EMAIL_USER}>`,
+        to: toEmail,
+        subject: `InterviewIQ: Your ${interview.jobRole} Interview Results (Score: ${interview.overallScore}/100)`,
+        html,
+    });
+};
