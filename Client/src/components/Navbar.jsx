@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
-import { HiOutlineSparkles, HiOutlineCreditCard, HiOutlineMenu, HiOutlineX } from 'react-icons/hi';
+import { HiOutlineSparkles, HiOutlineCreditCard, HiOutlineMenu, HiOutlineX, HiOutlineSun, HiOutlineMoon } from 'react-icons/hi';
 import { logout } from '../store/userSlice';
+import { useTheme } from '../context/ThemeContext';
 import API from '../utils/api';
 
 const Navbar = () => {
@@ -11,6 +12,7 @@ const Navbar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [menuOpen, setMenuOpen] = useState(false);
+    const { theme, toggleTheme } = useTheme();
 
     const handleLogout = async () => {
         try {
@@ -98,6 +100,28 @@ const Navbar = () => {
                             </Link>
                         </>
                     )}
+                    {/* Theme Toggle */}
+                    <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={toggleTheme}
+                        aria-label="Toggle theme"
+                        style={{
+                            background: 'rgba(99, 102, 241, 0.1)',
+                            border: '1px solid var(--border-accent)',
+                            borderRadius: '10px',
+                            width: '36px',
+                            height: '36px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            color: 'var(--primary-400)',
+                            transition: 'all 0.3s ease',
+                        }}
+                    >
+                        {theme === 'dark' ? <HiOutlineSun size={18} /> : <HiOutlineMoon size={18} />}
+                    </motion.button>
                 </div>
 
                 {/* Mobile Menu Toggle */}
