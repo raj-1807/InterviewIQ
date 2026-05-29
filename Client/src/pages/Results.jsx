@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import html2pdf from 'html2pdf.js';
 import {
     HiOutlineChartBar,
     HiOutlineLightningBolt,
@@ -8,6 +9,7 @@ import {
     HiOutlineArrowLeft,
     HiOutlineCheckCircle,
     HiOutlineExclamationCircle,
+    HiOutlineDownload,
 } from 'react-icons/hi';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -17,6 +19,27 @@ const Results = () => {
     const { id } = useParams();
     const [interview, setInterview] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [downloading, setDownloading] = useState(false);
+    const resultsRef = useRef(null);
+
+    const handleDownloadPDF = async () => {
+        if (!resultsRef.current) return;
+        setDownloading(true);
+        try {
+            const opt = {
+                margin: [10, 10, 10, 10],
+                filename: `InterviewIQ_${interview.jobRole.replace(/\s+/g, '_')}_Report.pdf`,
+                image: { type: 'jpeg', quality: 0.95 },
+                html2canvas: { scale: 2, useCORS: true, backgroundColor: '#0a0a1a' },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+            };
+            await html2pdf().set(opt).from(resultsRef.current).save();
+        } catch (err) {
+            console.error('PDF generation failed:', err);
+        } finally {
+            setDownloading(false);
+        }
+    };
 
     useEffect(() => {
         const fetchResults = async () => {
@@ -58,11 +81,29 @@ const Results = () => {
             <Navbar />
 
             <div className="section-container" style={{ paddingTop: '100px', paddingBottom: '60px', maxWidth: '900px' }}>
-                {/* Back Button */}
-                <Link to="/dashboard" className="flex items-center gap-2 mb-6 no-underline"
-                    style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
-                    <HiOutlineArrowLeft size={16} /> Back to Dashboard
-                </Link>
+                {/* Back + Download Buttons */}
+                <div className="flex items-center justify-between mb-6">
+                    <Link to="/dashboard" className="flex items-center gap-2 no-underline"
+                        style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+                        <HiOutlineArrowLeft size={16} /> Back to Dashboard
+                    </Link>
+                    <motion.button
+                        whileHover={{ scale: 1.03 }}
+                        whileTap={{ scale: 0.97 }}
+                        className="btn-primary"
+                        onClick={handleDownloadPDF}
+                        disabled={downloading}
+                        style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 20px', fontSize: '0.85rem' }}
+                    >
+                        {downloading ? (
+                            <><div className="spinner" style={{ width: '16px', height: '16px', borderWidth: '2px' }} /> Generating...</>
+                        ) : (
+                            <><HiOutlineDownload size={16} /> Download PDF</>
+                        )}
+                    </motion.button>
+                </div>
+
+                <div ref={resultsRef}>
 
                 {/* Score Hero */}
                 <motion.div
@@ -252,6 +293,8 @@ const Results = () => {
                         </motion.div>
                     ))}
                 </motion.div>
+
+                </div>
 
                 {/* Actions */}
                 <div className="flex gap-4 justify-center mt-8">
