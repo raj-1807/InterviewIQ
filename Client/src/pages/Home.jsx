@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
+import Typewriter from 'typewriter-effect';
 import {
     HiOutlineSparkles,
     HiOutlineDocumentText,
@@ -12,6 +13,7 @@ import {
 } from 'react-icons/hi';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import ParticleBackground from '../components/ParticleBackground';
 
 const fadeInUp = {
     initial: { opacity: 0, y: 30 },
@@ -106,6 +108,8 @@ const Home = () => {
 
             {/* Hero Section */}
             <section style={{ paddingTop: '140px', paddingBottom: '100px', position: 'relative', overflow: 'hidden' }}>
+                {/* Particle Background */}
+                <ParticleBackground />
                 {/* Background Glow Orbs */}
                 <div className="glow-orb glow-orb-primary" style={{ width: '500px', height: '500px', top: '-100px', right: '-100px' }} />
                 <div className="glow-orb glow-orb-accent" style={{ width: '400px', height: '400px', bottom: '-50px', left: '-100px' }} />
@@ -146,9 +150,25 @@ const Home = () => {
                             marginBottom: '24px',
                             fontFamily: 'var(--font-display)',
                         }}>
-                            Ace Your Next Interview with{' '}
-                            <span className="gradient-text">AI-Powered</span>{' '}
-                            Practice
+                            Ace Your Next{' '}
+                            <span className="gradient-text" style={{ display: 'inline-block', minWidth: '280px' }}>
+                                <Typewriter
+                                    options={{
+                                        strings: [
+                                            'Frontend Interview',
+                                            'Backend Interview',
+                                            'Data Science Interview',
+                                            'System Design Interview',
+                                            'HR Interview',
+                                            'DevOps Interview',
+                                        ],
+                                        autoStart: true,
+                                        loop: true,
+                                        deleteSpeed: 30,
+                                        delay: 60,
+                                    }}
+                                />
+                            </span>
                         </h1>
 
                         <p style={{
