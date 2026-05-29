@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>InterviewIQ — Project Explanation & Q&A</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg: #ffffff;
+            --bg-code: #1e1e2e;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        @media print {
+            body { font-size: 11px; line-height: 1.5; }
+            .no-print { display: none !important; }
+            .page-break { page-break-before: always; }
+            section { page-break-inside: avoid; }
+            pre { font-size: 9px !important; }
+            h1 { font-size: 22px !important; }
+            h2 { font-size: 16px !important; }
+            h3 { font-size: 13px !important; }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 32px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 48px 0 40px;
+            border-bottom: 3px solid var(--primary);
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .header .subtitle {
+            font-size: 16px;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .header .badge {
+            display: inline-block;
+            margin-top: 16px;
+            padding: 6px 20px;
+            border-radius: 20px;
+            background: #eef2ff;
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Sections */
+        section {
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #eef2ff;
+        }
+
+        h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+            margin: 20px 0 10px;
+        }
+
+        h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin: 14px 0 6px;
+            color: var(--primary-light);
+        }
+
+        p {
+            margin-bottom: 12px;
+            color: #334155;
+        }
+
+        ul, ol {
+            padding-left: 24px;
+            margin-bottom: 14px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        strong {
+            font-weight: 600;
+        }
+
+        /* Code Blocks */
+        pre {
+            background: var(--bg-code);
+            color: #cdd6f4;
+            padding: 16px 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            margin: 12px 0 16px;
+            line-height: 1.6;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: var(--primary);
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: inherit;
+        }
+
+        .keyword { color: #cba6f7; }
+        .string { color: #a6e3a1; }
+        .comment { color: #6c7086; font-style: italic; }
+        .func { color: #89b4fa; }
+        .var { color: #fab387; }
+
+        /* Info Boxes */
+        .info-box {
+            padding: 16px 20px;
+            border-radius: 10px;
+            margin: 16px 0;
+            border-left: 4px solid;
+        }
+
+        .info-box.note {
+            background: #eff6ff;
+            border-color: #3b82f6;
+        }
+
+        .info-box.tip {
+            background: #ecfdf5;
+            border-color: var(--success);
+        }
+
+        .info-box.warning {
+            background: #fefce8;
+            border-color: var(--warning);
+        }
+
+        .info-box .label {
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+
+        .info-box.note .label { color: #3b82f6; }
+        .info-box.tip .label { color: var(--success); }
+        .info-box.warning .label { color: var(--warning); }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 13px;
+        }
+
+        th {
+            background: #f8fafc;
+            text-align: left;
+            padding: 10px 14px;
+            font-weight: 600;
+            border: 1px solid var(--border);
+            color: var(--primary);
+        }
+
+        td {
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            vertical-align: top;
+        }
+
+        tr:nth-child(even) td {
+            background: #fafbfc;
+        }
+
+        /* Architecture Diagram */
+        .arch-diagram {
+            background: #f8fafc;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 16px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            line-height: 1.4;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        /* Q&A Section */
+        .qa-item {
+            margin-bottom: 24px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: #fafbfc;
+        }
+
+        .qa-item .question {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .qa-item .question::before {
+            content: "Q: ";
+            color: var(--danger);
+            font-weight: 800;
+        }
+
+        .qa-item .answer {
+            color: #334155;
+        }
+
+        .qa-item .answer::before {
+            content: "A: ";
+            color: var(--success);
+            font-weight: 800;
+        }
+
+        .qa-number {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            line-height: 28px;
+            text-align: center;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            font-weight: 700;
+            font-size: 12px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        /* Flow Steps */
+        .step {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content h4 {
+            margin-top: 0;
+            margin-bottom: 4px;
+            color: var(--text);
+        }
+
+        /* Print Button */
+        .print-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 12px 28px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(79,70,229,0.3);
+            z-index: 100;
+        }
+
+        .print-btn:hover {
+            background: #4338ca;
+        }
+
+        /* TOC */
+        .toc {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin-bottom: 32px;
+        }
+
+        .toc h3 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+
+        .toc ol {
+            columns: 2;
+            column-gap: 24px;
+        }
+
+        .toc a {
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .toc a:hover {
+            color: var(--primary);
+        }
+
+        .tech-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            margin: 2px 3px;
+        }
+        .tech-badge.frontend { background: #dbeafe; color: #1d4ed8; }
+        .tech-badge.backend { background: #dcfce7; color: #15803d; }
+        .tech-badge.database { background: #fef3c7; color: #92400e; }
+        .tech-badge.api { background: #fce7f3; color: #9d174d; }
+        .tech-badge.payment { background: #e0e7ff; color: #3730a3; }
+    </style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">🖨️ Print / Save PDF</button>
+
+<div class="container">
+
+    <!-- ===================== HEADER ===================== -->
+    <div class="header">
+        <h1>🤖 InterviewIQ</h1>
+        <div class="subtitle">AI-Powered Interview Preparation Platform — MERN Stack Project</div>
+        <div class="badge">Full-Stack SaaS Application</div>
+    </div>
+
+    <!-- ===================== TABLE OF CONTENTS ===================== -->
+    <div class="toc">
+        <h3>📑 Table of Contents</h3>
+        <ol>
+            <li><a href="#overview">Project Overview</a></li>
+            <li><a href="#techstack">Tech Stack</a></li>
+            <li><a href="#architecture">Architecture Diagram</a></li>
+            <li><a href="#folder">Folder Structure</a></li>
+            <li><a href="#backend">Backend Explanation</a></li>
+            <li><a href="#frontend">Frontend Explanation</a></li>
+            <li><a href="#flow">User Flow (Step-by-Step)</a></li>
+            <li><a href="#api">API Endpoints</a></li>
+            <li><a href="#database">Database Schemas</a></li>
+            <li><a href="#run">How to Run</a></li>
+            <li><a href="#qa">Interview Q&A (30+)</a></li>
+        </ol>
+    </div>
+
+    <!-- ===================== 1. OVERVIEW ===================== -->
+    <section id="overview">
+        <h2>1. Project Overview</h2>
+        <p><strong>InterviewIQ</strong> is a production-ready, SaaS-style AI interview preparation platform built with the MERN stack. It allows users to:</p>
+        <ul>
+            <li><strong>Upload their resume (PDF)</strong> and have AI extract and analyze the content</li>
+            <li><strong>Practice with AI-generated interview questions</strong> (technical, behavioral, HR) personalized to their resume and target job role</li>
+            <li><strong>Get real-time AI feedback</strong> on each answer with scores from 0-10</li>
+            <li><strong>Receive an overall assessment</strong> with strengths, improvements, and a score out of 100</li>
+            <li><strong>Purchase credits via Razorpay</strong> to access more interview sessions</li>
+            <li><strong>Login securely</strong> using Google Authentication through Firebase</li>
+        </ul>
+
+        <div class="info-box note">
+            <div class="label">💡 Key Differentiator</div>
+            Unlike basic CRUD apps, this project demonstrates real-world patterns: third-party API integration (Gemini AI, Firebase, Razorpay), credit-based monetization, PDF processing, and a chat-style interactive UI.
+        </div>
+    </section>
+
+    <!-- ===================== 2. TECH STACK ===================== -->
+    <section id="techstack">
+        <h2>2. Tech Stack</h2>
+
+        <table>
+            <thead>
+                <tr><th>Layer</th><th>Technology</th><th>Purpose</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Frontend</strong></td>
+                    <td>
+                        <span class="tech-badge frontend">React.js</span>
+                        <span class="tech-badge frontend">Vite</span>
+                        <span class="tech-badge frontend">Tailwind CSS v4</span>
+                        <span class="tech-badge frontend">Framer Motion</span>
+                        <span class="tech-badge frontend">Redux Toolkit</span>
+                    </td>
+                    <td>UI, build tool, styling, animations, state management</td>
+                </tr>
+                <tr>
+                    <td><strong>Backend</strong></td>
+                    <td>
+                        <span class="tech-badge backend">Node.js</span>
+                        <span class="tech-badge backend">Express.js v5</span>
+                    </td>
+                    <td>REST API server, route handling, middleware</td>
+                </tr>
+                <tr>
+                    <td><strong>Database</strong></td>
+                    <td>
+                        <span class="tech-badge database">MongoDB Atlas</span>
+                        <span class="tech-badge database">Mongoose</span>
+                    </td>
+                    <td>Cloud database, ODM for schema modeling</td>
+                </tr>
+                <tr>
+                    <td><strong>Authentication</strong></td>
+                    <td>
+                        <span class="tech-badge api">Firebase Auth</span>
+                        <span class="tech-badge api">JWT</span>
+                    </td>
+                    <td>Google Sign-In, server-side token verification</td>
+                </tr>
+                <tr>
+                    <td><strong>AI</strong></td>
+                    <td>
+                        <span class="tech-badge api">Google Gemini 2.0 Flash</span>
+                    </td>
+                    <td>Question generation, answer evaluation, feedback</td>
+                </tr>
+                <tr>
+                    <td><strong>Payments</strong></td>
+                    <td>
+                        <span class="tech-badge payment">Razorpay</span>
+                    </td>
+                    <td>Credit purchase, order creation, payment verification</td>
+                </tr>
+                <tr>
+                    <td><strong>Other</strong></td>
+                    <td>
+                        <span class="tech-badge backend">Multer</span>
+                        <span class="tech-badge backend">pdf-parse</span>
+                        <span class="tech-badge frontend">Axios</span>
+                    </td>
+                    <td>File upload, PDF text extraction, HTTP client</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- ===================== 3. ARCHITECTURE ===================== -->
+    <section id="architecture">
+        <h2>3. Architecture Diagram</h2>
+        <div class="arch-diagram">
+┌──────────────────────────────────────────────────────────────────┐
+│                        CLIENT (React + Vite)                     │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────────────┐ │
+│  │  Redux   │  │  React   │  │  Framer  │  │  Tailwind CSS    │ │
+│  │  Toolkit │  │  Router  │  │  Motion  │  │  + Glassmorphism │ │
+│  └──────────┘  └──────────┘  └──────────┘  └──────────────────┘ │
+│              │                                                   │
+│         Axios (HTTP)  ──── Firebase Auth (Google Sign-In)        │
+│              │                        │                          │
+└──────────────┼────────────────────────┼──────────────────────────┘
+               │ REST API               │ Firebase ID Token
+               ▼                        ▼
+┌──────────────────────────────────────────────────────────────────┐
+│                     SERVER (Express.js + Node.js)                │
+│                                                                  │
+│  ┌─────────────┐  ┌─────────────────┐  ┌─────────────────────┐  │
+│  │  Auth       │  │  Interview      │  │  Payment            │  │
+│  │  Routes     │  │  Routes         │  │  Routes             │  │
+│  │  /api/auth  │  │  /api/interview │  │  /api/payment       │  │
+│  └──────┬──────┘  └───────┬─────────┘  └──────────┬──────────┘  │
+│         │                 │                        │             │
+│  ┌──────┴──────┐  ┌───────┴─────────┐  ┌──────────┴──────────┐  │
+│  │  JWT Auth   │  │  Multer Upload  │  │  HMAC Signature     │  │
+│  │  Middleware │  │  + pdf-parse    │  │  Verification       │  │
+│  └──────┬──────┘  └───────┬─────────┘  └──────────┬──────────┘  │
+│         │                 │                        │             │
+│         ▼                 ▼                        ▼             │
+│  ┌─────────────────────────────────────────────────────────────┐ │
+│  │                     Controllers                             │ │
+│  │  authController  │  interviewController  │  paymentController│ │
+│  └──────────────────┴───────────────────────┴──────────────────┘ │
+└──────────┬────────────────┬───────────────────────┬──────────────┘
+           │                │                       │
+           ▼                ▼                       ▼
+   ┌──────────────┐  ┌──────────────┐      ┌──────────────┐
+   │  MongoDB     │  │  Gemini AI   │      │  Razorpay    │
+   │  Atlas       │  │  API         │      │  API         │
+   │  (Database)  │  │  (Google)    │      │  (Payments)  │
+   └──────────────┘  └──────────────┘      └──────────────┘
+        </div>
+    </section>
+
+    <!-- ===================== 4. FOLDER STRUCTURE ===================== -->
+    <section id="folder">
+        <h2>4. Folder Structure</h2>
+        <pre><code>InterviewIQ/
+├── Server/                          <span class="comment"># Express.js Backend</span>
+│   ├── config/
+│   │   ├── db.js                    <span class="comment"># MongoDB connection</span>
+│   │   ├── firebase.js              <span class="comment"># Firebase Admin SDK init</span>
+│   │   ├── gemini.js                <span class="comment"># Google Gemini AI client</span>
+│   │   └── razorpay.js              <span class="comment"># Razorpay instance</span>
+│   ├── controllers/
+│   │   ├── authController.js        <span class="comment"># Login, profile, logout</span>
+│   │   ├── interviewController.js   <span class="comment"># Start, answer, complete</span>
+│   │   └── paymentController.js     <span class="comment"># Orders, verify, history</span>
+│   ├── middleware/
+│   │   ├── auth.js                  <span class="comment"># JWT verification</span>
+│   │   └── upload.js                <span class="comment"># Multer PDF upload config</span>
+│   ├── models/
+│   │   ├── User.js                  <span class="comment"># User schema (credits)</span>
+│   │   ├── Interview.js             <span class="comment"># Interview + questions</span>
+│   │   └── Payment.js               <span class="comment"># Payment records</span>
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── interviewRoutes.js
+│   │   └── paymentRoutes.js
+│   ├── utils/
+│   │   ├── aiPrompts.js             <span class="comment"># Structured Gemini prompts</span>
+│   │   └── extractPdfText.js        <span class="comment"># PDF text extraction</span>
+│   ├── index.js                     <span class="comment"># Server entry point</span>
+│   └── .env                         <span class="comment"># Environment variables</span>
+│
+└── Client/                          <span class="comment"># React + Vite Frontend</span>
+    ├── src/
+    │   ├── config/firebase.js       <span class="comment"># Firebase client config</span>
+    │   ├── store/
+    │   │   ├── store.js             <span class="comment"># Redux store</span>
+    │   │   ├── userSlice.js         <span class="comment"># Auth state mgmt</span>
+    │   │   └── interviewSlice.js    <span class="comment"># Interview state mgmt</span>
+    │   ├── utils/api.js             <span class="comment"># Axios with interceptors</span>
+    │   ├── components/
+    │   │   ├── Navbar.jsx           <span class="comment"># Glass nav + credits</span>
+    │   │   ├── Footer.jsx
+    │   │   └── ProtectedRoute.jsx   <span class="comment"># Auth guard</span>
+    │   ├── pages/
+    │   │   ├── Home.jsx             <span class="comment"># Landing page</span>
+    │   │   ├── Login.jsx            <span class="comment"># Google Sign-In</span>
+    │   │   ├── Dashboard.jsx        <span class="comment"># User dashboard</span>
+    │   │   ├── Interview.jsx        <span class="comment"># Chat-style Q&A</span>
+    │   │   ├── Results.jsx          <span class="comment"># Score + feedback</span>
+    │   │   ├── PricingPage.jsx      <span class="comment"># Credit packages</span>
+    │   │   └── NotFound.jsx         <span class="comment"># 404 page</span>
+    │   ├── App.jsx                  <span class="comment"># Router setup</span>
+    │   ├── main.jsx                 <span class="comment"># Entry + Redux</span>
+    │   └── index.css                <span class="comment"># Design system</span>
+    ├── index.html
+    └── vite.config.js               <span class="comment"># Vite + proxy</span></code></pre>
+    </section>
+
+    <!-- ===================== 5. BACKEND EXPLANATION ===================== -->
+    <section id="backend" class="page-break">
+        <h2>5. Backend — Step by Step</h2>
+
+        <h3>5.1 Server Entry Point (index.js)</h3>
+        <p>The server initializes Express, connects to MongoDB, configures middleware (CORS, JSON parsing, cookie-parser), and registers all API routes.</p>
+        <pre><code><span class="keyword">import</span> express <span class="keyword">from</span> <span class="string">'express'</span>;
+<span class="keyword">import</span> connectDB <span class="keyword">from</span> <span class="string">'./config/db.js'</span>;
+
+<span class="keyword">const</span> app = <span class="func">express</span>();
+
+<span class="comment">// Connect to MongoDB Atlas</span>
+<span class="func">connectDB</span>();
+
+<span class="comment">// Middleware</span>
+app.<span class="func">use</span>(<span class="func">cors</span>({ origin: process.env.CLIENT_URL, credentials: <span class="keyword">true</span> }));
+app.<span class="func">use</span>(express.<span class="func">json</span>());
+app.<span class="func">use</span>(<span class="func">cookieParser</span>());
+
+<span class="comment">// Routes</span>
+app.<span class="func">use</span>(<span class="string">'/api/auth'</span>, authRoutes);
+app.<span class="func">use</span>(<span class="string">'/api/interview'</span>, interviewRoutes);
+app.<span class="func">use</span>(<span class="string">'/api/payment'</span>, paymentRoutes);</code></pre>
+
+        <h3>5.2 Authentication Flow</h3>
+        <p>We use a <strong>dual authentication</strong> approach:</p>
+        <ol>
+            <li><strong>Firebase Auth</strong> on the client handles Google Sign-In and gives us a Firebase ID Token</li>
+            <li><strong>Backend verifies</strong> the Firebase token using Firebase Admin SDK</li>
+            <li><strong>Backend creates a JWT</strong> for subsequent API calls (stored in HTTP-only cookie)</li>
+        </ol>
+        <pre><code><span class="comment">// 1. Client sends Firebase token to backend</span>
+<span class="keyword">const</span> decodedToken = <span class="keyword">await</span> admin.<span class="func">auth</span>().<span class="func">verifyIdToken</span>(token);
+
+<span class="comment">// 2. Find or create user in MongoDB</span>
+<span class="keyword">let</span> user = <span class="keyword">await</span> User.<span class="func">findOne</span>({ firebaseUid: uid });
+<span class="keyword">if</span> (!user) user = <span class="keyword">await</span> User.<span class="func">create</span>({ name, email, firebaseUid: uid, credits: <span class="var">5</span> });
+
+<span class="comment">// 3. Generate JWT for our own API</span>
+<span class="keyword">const</span> jwtToken = jwt.<span class="func">sign</span>({ id: user._id }, process.env.JWT_SECRET, { expiresIn: <span class="string">'7d'</span> });
+
+<span class="comment">// 4. Set HTTP-only cookie</span>
+res.<span class="func">cookie</span>(<span class="string">'token'</span>, jwtToken, { httpOnly: <span class="keyword">true</span>, secure: <span class="keyword">true</span> });</code></pre>
+
+        <h3>5.3 Interview Flow (AI Integration)</h3>
+        <p>The interview process has 3 main API calls:</p>
+
+        <h4>Step 1: Start Interview</h4>
+        <ul>
+            <li>User uploads PDF resume + enters job role</li>
+            <li><code>Multer</code> handles file upload (memory storage, 5MB limit)</li>
+            <li><code>pdf-parse</code> extracts text from the PDF buffer</li>
+            <li>Text is sent to <strong>Gemini AI</strong> with a structured prompt to generate 10 questions</li>
+            <li>1 credit is deducted from the user's account</li>
+        </ul>
+
+        <h4>Step 2: Submit Answer</h4>
+        <ul>
+            <li>For each question, the user's answer is sent to <strong>Gemini AI</strong></li>
+            <li>AI evaluates and returns a score (0-10) + detailed feedback</li>
+            <li>Result is saved to the interview document in MongoDB</li>
+        </ul>
+
+        <h4>Step 3: Complete Interview</h4>
+        <ul>
+            <li>After all questions are answered, <strong>Gemini AI</strong> generates overall feedback</li>
+            <li>Returns: overall score (0-100), strengths, areas for improvement</li>
+        </ul>
+
+        <h3>5.4 Payment Integration (Razorpay)</h3>
+        <p>Payment follows the standard <strong>Razorpay server-to-server flow</strong>:</p>
+        <ol>
+            <li><strong>Create Order</strong>: Backend creates a Razorpay order using their SDK</li>
+            <li><strong>Client Checkout</strong>: Frontend opens the Razorpay payment popup</li>
+            <li><strong>Verify Payment</strong>: Backend verifies the payment signature using HMAC-SHA256</li>
+            <li><strong>Grant Credits</strong>: On successful verification, credits are added to the user</li>
+        </ol>
+        <pre><code><span class="comment">// Signature verification (critical for security)</span>
+<span class="keyword">const</span> body = razorpay_order_id + <span class="string">'|'</span> + razorpay_payment_id;
+<span class="keyword">const</span> expectedSignature = crypto
+    .<span class="func">createHmac</span>(<span class="string">'sha256'</span>, process.env.RAZORPAY_KEY_SECRET)
+    .<span class="func">update</span>(body)
+    .<span class="func">digest</span>(<span class="string">'hex'</span>);
+
+<span class="keyword">if</span> (expectedSignature !== razorpay_signature) {
+    <span class="keyword">throw</span> <span class="keyword">new</span> Error(<span class="string">'Payment verification failed'</span>);
+}</code></pre>
+
+        <h3>5.5 AI Prompts Design</h3>
+        <p>We use 3 structured prompts with Gemini AI:</p>
+        <table>
+            <thead>
+                <tr><th>Prompt</th><th>Input</th><th>Output</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Generate Questions</td><td>Resume text + Job role</td><td>10 questions (6 technical + 2 behavioral + 2 HR) as JSON array</td></tr>
+                <tr><td>Evaluate Answer</td><td>Question + User's answer + Job role</td><td>Score (0-10) + Detailed feedback as JSON</td></tr>
+                <tr><td>Overall Feedback</td><td>All Q&As + scores</td><td>Overall score (0-100) + strengths + improvements as JSON</td></tr>
+            </tbody>
+        </table>
+
+        <div class="info-box tip">
+            <div class="label">🎯 Prompt Engineering Tip</div>
+            Each prompt explicitly instructs the AI to return <strong>"ONLY valid JSON"</strong> with no markdown or extra text. The backend also strips markdown code blocks if the AI adds them, making parsing robust.
+        </div>
+    </section>
+
+    <!-- ===================== 6. FRONTEND EXPLANATION ===================== -->
+    <section id="frontend" class="page-break">
+        <h2>6. Frontend — Step by Step</h2>
+
+        <h3>6.1 State Management (Redux Toolkit)</h3>
+        <p>We use <strong>Redux Toolkit</strong> with two slices:</p>
+        <ul>
+            <li><strong>userSlice</strong>: Manages authentication state (user object, JWT token, credits). Persists to <code>localStorage</code> so login survives page refresh.</li>
+            <li><strong>interviewSlice</strong>: Manages current interview session and history.</li>
+        </ul>
+
+        <h3>6.2 API Layer (Axios Interceptors)</h3>
+        <p>A centralized Axios instance with two interceptors:</p>
+        <ul>
+            <li><strong>Request interceptor</strong>: Automatically attaches the JWT token from localStorage to every request's Authorization header.</li>
+            <li><strong>Response interceptor</strong>: On 401 errors, clears auth state and redirects to login page.</li>
+        </ul>
+
+        <h3>6.3 Key Pages</h3>
+        <table>
+            <thead>
+                <tr><th>Page</th><th>Route</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Home</strong></td><td><code>/</code></td><td>Landing page with hero, features, pricing, CTA. Scroll animations via Framer Motion.</td></tr>
+                <tr><td><strong>Login</strong></td><td><code>/login</code></td><td>Google Sign-In with Firebase popup. Animated glass card UI.</td></tr>
+                <tr><td><strong>Dashboard</strong></td><td><code>/dashboard</code></td><td>User stats (credits, total interviews, avg score). Interview history grid. Modal to start new interview with resume upload.</td></tr>
+                <tr><td><strong>Interview</strong></td><td><code>/interview/:id</code></td><td>Chat-style Q&A. AI question appears, user types answer, gets real-time feedback. Progress bar tracks completion.</td></tr>
+                <tr><td><strong>Results</strong></td><td><code>/results/:id</code></td><td>Animated circular score (SVG). Strengths + improvements cards. Question-by-question review with color-coded scores.</td></tr>
+                <tr><td><strong>Pricing</strong></td><td><code>/pricing</code></td><td>3 credit packages. Opens Razorpay checkout on click. Credits update in real-time.</td></tr>
+            </tbody>
+        </table>
+
+        <h3>6.4 Design System</h3>
+        <p>The UI uses a <strong>dark glassmorphism</strong> theme defined via CSS custom properties:</p>
+        <ul>
+            <li><strong>Colors</strong>: Deep indigo (#0a0a1a) backgrounds with electric violet (#6366f1) accents</li>
+            <li><strong>Glass Effect</strong>: <code>backdrop-filter: blur(20px)</code> with semi-transparent backgrounds</li>
+            <li><strong>Typography</strong>: Inter (body) + Outfit (display headings) from Google Fonts</li>
+            <li><strong>Animations</strong>: Float, pulse-glow, shimmer keyframes + Framer Motion page transitions</li>
+        </ul>
+
+        <h3>6.5 Protected Routes</h3>
+        <p>The <code>ProtectedRoute</code> component wraps authenticated pages. It checks Redux state for a logged-in user and redirects to <code>/login</code> if none found.</p>
+    </section>
+
+    <!-- ===================== 7. USER FLOW ===================== -->
+    <section id="flow" class="page-break">
+        <h2>7. Complete User Flow</h2>
+
+        <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+                <h4>Landing Page Visit</h4>
+                <p>User visits the homepage. Sees hero section, features, pricing, and animated UI. Clicks "Get Started Free".</p>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+                <h4>Google Login</h4>
+                <p>Firebase Auth popup opens → Google login → Firebase returns ID token → Sent to backend → Backend verifies with Firebase Admin SDK → Creates/finds user in MongoDB (with 5 free credits) → Returns JWT in HTTP-only cookie.</p>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+                <h4>Dashboard</h4>
+                <p>User sees their stats (credits, interview count, avg score) and interview history. Clicks "Start New Interview".</p>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-content">
+                <h4>Upload Resume + Select Role</h4>
+                <p>Modal opens → User enters target job role (e.g., "Frontend Developer") → Optionally uploads PDF resume → Clicks Start.</p>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num">5</div>
+            <div class="step-content">
+                <h4>AI Question Generation</h4>
+                <p>Backend: Multer receives PDF → pdf-parse extracts text → Text + job role sent to Gemini AI → AI returns 10 personalized questions → Interview document created in MongoDB → 1 credit deducted.</p>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num">6</div>
+            <div class="step-content">
+                <h4>Interactive Q&A Session</h4>
+                <p>Chat-style interface shows questions one by one. User types answer → Sent to Gemini AI → AI evaluates → Returns score (0-10) + feedback → Displayed immediately. User proceeds to next question.</p>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num">7</div>
+            <div class="step-content">
+                <h4>Get Results</h4>
+                <p>After all questions answered → User clicks "Get Results" → Gemini AI generates overall assessment → Score (0-100), strengths, improvements → Results page with animated circular score and detailed review.</p>
+            </div>
+        </div>
+
+        <div class="step">
+            <div class="step-num">8</div>
+            <div class="step-content">
+                <h4>Buy More Credits (Optional)</h4>
+                <p>User goes to Pricing → Selects a package → Razorpay checkout opens → Payment processed → Backend verifies HMAC signature → Credits added to user account.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== 8. API ENDPOINTS ===================== -->
+    <section id="api">
+        <h2>8. API Endpoints</h2>
+        <table>
+            <thead>
+                <tr><th>Method</th><th>Endpoint</th><th>Auth</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>POST</strong></td><td><code>/api/auth/google</code></td><td>❌</td><td>Verify Firebase token, create user, return JWT</td></tr>
+                <tr><td><strong>GET</strong></td><td><code>/api/auth/me</code></td><td>✅</td><td>Get current user profile</td></tr>
+                <tr><td><strong>POST</strong></td><td><code>/api/auth/logout</code></td><td>✅</td><td>Clear auth cookie</td></tr>
+                <tr><td><strong>POST</strong></td><td><code>/api/interview/start</code></td><td>✅</td><td>Upload resume + start interview (multipart)</td></tr>
+                <tr><td><strong>POST</strong></td><td><code>/api/interview/answer</code></td><td>✅</td><td>Submit answer, get AI feedback</td></tr>
+                <tr><td><strong>POST</strong></td><td><code>/api/interview/complete</code></td><td>✅</td><td>Complete interview, get overall score</td></tr>
+                <tr><td><strong>GET</strong></td><td><code>/api/interview/history</code></td><td>✅</td><td>Get user's interview history</td></tr>
+                <tr><td><strong>GET</strong></td><td><code>/api/interview/:id</code></td><td>✅</td><td>Get single interview details</td></tr>
+                <tr><td><strong>POST</strong></td><td><code>/api/payment/create-order</code></td><td>✅</td><td>Create Razorpay order</td></tr>
+                <tr><td><strong>POST</strong></td><td><code>/api/payment/verify</code></td><td>✅</td><td>Verify payment + add credits</td></tr>
+                <tr><td><strong>GET</strong></td><td><code>/api/payment/history</code></td><td>✅</td><td>Get payment history</td></tr>
+                <tr><td><strong>GET</strong></td><td><code>/api/payment/packages</code></td><td>❌</td><td>Get available credit packages</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- ===================== 9. DATABASE SCHEMAS ===================== -->
+    <section id="database" class="page-break">
+        <h2>9. Database Schemas (MongoDB)</h2>
+
+        <h3>User Schema</h3>
+        <pre><code>{
+  name:        String,        <span class="comment">// "Raj Kumar"</span>
+  email:       String,        <span class="comment">// "raj@gmail.com" (unique)</span>
+  firebaseUid: String,        <span class="comment">// Firebase UID (unique)</span>
+  photoURL:    String,        <span class="comment">// Google profile picture</span>
+  credits:     Number,        <span class="comment">// Default: 5 (free credits)</span>
+  plan:        String,        <span class="comment">// "free" | "basic" | "pro"</span>
+  createdAt:   Date           <span class="comment">// Auto (timestamps: true)</span>
+}</code></pre>
+
+        <h3>Interview Schema</h3>
+        <pre><code>{
+  userId:          ObjectId,   <span class="comment">// Reference to User</span>
+  resumeText:      String,     <span class="comment">// Extracted PDF text</span>
+  jobRole:         String,     <span class="comment">// "Frontend Developer"</span>
+  questions: [{
+    question:      String,     <span class="comment">// "Explain closures in JS"</span>
+    type:          String,     <span class="comment">// "technical" | "hr" | "behavioral"</span>
+    answer:        String,     <span class="comment">// User's answer</span>
+    feedback:      String,     <span class="comment">// AI feedback</span>
+    score:         Number      <span class="comment">// 0-10</span>
+  }],
+  overallFeedback: String,     <span class="comment">// AI-generated overall assessment</span>
+  overallScore:    Number,     <span class="comment">// 0-100</span>
+  strengths:       [String],   <span class="comment">// ["Strong JS fundamentals"]</span>
+  improvements:    [String],   <span class="comment">// ["Practice system design"]</span>
+  status:          String,     <span class="comment">// "in_progress" | "completed"</span>
+  totalQuestions:  Number,     <span class="comment">// 10</span>
+  currentQuestion: Number      <span class="comment">// Tracks progress (0-10)</span>
+}</code></pre>
+
+        <h3>Payment Schema</h3>
+        <pre><code>{
+  userId:    ObjectId,   <span class="comment">// Reference to User</span>
+  orderId:   String,     <span class="comment">// Razorpay order ID</span>
+  paymentId: String,     <span class="comment">// Razorpay payment ID</span>
+  signature: String,     <span class="comment">// Razorpay signature</span>
+  amount:    Number,     <span class="comment">// Amount in paise (9900 = ₹99)</span>
+  credits:   Number,     <span class="comment">// Credits purchased</span>
+  status:    String      <span class="comment">// "created" | "paid" | "failed"</span>
+}</code></pre>
+    </section>
+
+    <!-- ===================== 10. HOW TO RUN ===================== -->
+    <section id="run">
+        <h2>10. How to Run the Project</h2>
+
+        <h3>Prerequisites</h3>
+        <ul>
+            <li>Node.js 18+ installed</li>
+            <li>MongoDB Atlas account (free tier works)</li>
+            <li>Firebase project with Google Auth enabled</li>
+            <li>Razorpay test account</li>
+            <li>Google Gemini API key (from Google AI Studio)</li>
+        </ul>
+
+        <h3>Step 1: Configure Server Environment</h3>
+        <p>Edit <code>Server/.env</code> with your actual keys:</p>
+        <pre><code>PORT = 8000
+MONGODB_URI = mongodb+srv://username:password@cluster.mongodb.net/interviewiq
+JWT_SECRET = any-random-long-secret-string
+FIREBASE_PROJECT_ID = your-project-id
+FIREBASE_CLIENT_EMAIL = firebase-adminsdk-xxx@your-project.iam.gserviceaccount.com
+FIREBASE_PRIVATE_KEY = "-----BEGIN PRIVATE KEY-----\nYourKey\n-----END PRIVATE KEY-----"
+RAZORPAY_KEY_ID = rzp_test_xxxxxx
+RAZORPAY_KEY_SECRET = your_secret
+GEMINI_API_KEY = AIzaSyxxxxxxxxxx
+CLIENT_URL = http://localhost:5173</code></pre>
+
+        <h3>Step 2: Configure Client Firebase</h3>
+        <p>Edit <code>Client/src/config/firebase.js</code> with your Firebase web config from the Firebase Console.</p>
+
+        <h3>Step 3: Start Backend</h3>
+        <pre><code>cd Server
+npm install
+npm run dev</code></pre>
+        <p>Server starts on <strong>http://localhost:8000</strong></p>
+
+        <h3>Step 4: Start Frontend</h3>
+        <pre><code>cd Client
+npm install
+npm run dev</code></pre>
+        <p>Frontend starts on <strong>http://localhost:5173</strong></p>
+
+        <div class="info-box warning">
+            <div class="label">⚠️ Important</div>
+            The Vite dev server is configured to <strong>proxy</strong> all <code>/api</code> requests to <code>http://localhost:8000</code>, so both servers must be running simultaneously. Open two terminals.
+        </div>
+    </section>
+
+    <!-- ===================== 11. INTERVIEW Q&A ===================== -->
+    <section id="qa" class="page-break">
+        <h2>11. Interview Q&A (30+ Questions)</h2>
+
+        <h3>🏗️ Architecture & Design</h3>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">1</span>What is the overall architecture of this project?</div>
+            <div class="answer">It follows a <strong>3-tier architecture</strong>: React frontend (Presentation), Express.js backend (Business Logic), and MongoDB (Data). The frontend communicates with the backend via REST APIs. The backend integrates with 3 external services: Firebase (auth), Google Gemini (AI), and Razorpay (payments). Authentication uses a dual approach — Firebase handles Google Sign-In on the client, then the backend verifies the Firebase token and issues its own JWT for API authorization.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">2</span>Why did you choose the MERN stack?</div>
+            <div class="answer">MERN (MongoDB, Express, React, Node) provides <strong>JavaScript across the entire stack</strong>, simplifying development. MongoDB's flexible document model is ideal for storing nested interview data (questions, answers, feedback all in one document). React's component model allows building a complex interactive UI like the chat-style interview. Node.js handles async operations (AI API calls, file processing) efficiently via its event loop.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">3</span>Why use Firebase Auth instead of building your own authentication?</div>
+            <div class="answer">Firebase Auth provides <strong>battle-tested OAuth integration</strong> (Google, GitHub, etc.) with minimal code. It handles token management, session persistence, and security automatically. Building OAuth from scratch requires handling redirects, token exchange, PKCE flows, and security vulnerabilities — Firebase eliminates all of this. We still use our own JWT for API authorization to keep backend logic independent of Firebase.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">4</span>Why dual authentication (Firebase + JWT)?</div>
+            <div class="answer">Firebase tokens are tied to Firebase's infrastructure. By issuing our <strong>own JWT after verifying the Firebase token</strong>, we: (1) decouple our API from Firebase — if we switch auth providers, only the login endpoint changes, (2) control token expiry and payload, (3) can add custom claims like user ID from our database, (4) reduce latency — JWT verification is a simple cryptographic check vs. Firebase's network call.</div>
+        </div>
+
+        <h3>🔧 Backend Questions</h3>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">5</span>How does the JWT middleware work?</div>
+            <div class="answer">The <code>auth</code> middleware extracts the JWT from either cookies (<code>req.cookies.token</code>) or the Authorization header (<code>Bearer token</code>). It verifies the token using <code>jwt.verify()</code> with the secret key. If valid, it fetches the user from MongoDB using the decoded <code>id</code> and attaches it to <code>req.user</code> for downstream handlers. If invalid/expired, it returns a 401 error.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">6</span>How does the resume upload work technically?</div>
+            <div class="answer"><strong>Multer</strong> is configured with <code>memoryStorage()</code>, meaning the file is stored in RAM as a Buffer (not written to disk). A custom <code>fileFilter</code> only allows <code>.pdf</code> files. The 5MB limit is enforced via <code>limits.fileSize</code>. The buffer is then passed to <code>pdf-parse</code>, which extracts the text content from the PDF binary without needing a file system write.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">7</span>Why use memory storage for Multer instead of disk?</div>
+            <div class="answer">We only need the PDF's <strong>text content</strong>, not the file itself. Memory storage avoids disk I/O, is faster, and doesn't require cleanup. The buffer is processed immediately by pdf-parse and then garbage collected. For a production app handling large files, you'd use disk storage or cloud storage (S3), but for our 5MB PDFs, memory is efficient.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">8</span>How do you ensure the AI returns valid JSON?</div>
+            <div class="answer">Three safeguards: (1) The prompt explicitly instructs: <em>"Return ONLY valid JSON, no markdown, no code blocks, no extra text"</em>. (2) The <code>parseAIResponse()</code> helper strips markdown code block wrappers (<code>```json...```</code>) if the AI adds them. (3) A try-catch wraps the parse — if it fails, we provide a sensible fallback (e.g., default score of 5) rather than crashing.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">9</span>How is the Razorpay payment verified securely?</div>
+            <div class="answer">Razorpay uses <strong>HMAC-SHA256 signature verification</strong>. After payment, Razorpay returns 3 values: order_id, payment_id, and a signature. The backend concatenates <code>order_id + "|" + payment_id</code>, generates an HMAC using the Razorpay secret key, and compares it with the provided signature. If they match, the payment is genuine and hasn't been tampered with. Only then are credits granted.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">10</span>Why do you create a Payment record before the payment is made?</div>
+            <div class="answer">We create the record with <code>status: "created"</code> when generating the Razorpay order. This provides <strong>audit trail and idempotency</strong>. If the user's browser crashes after payment but before verification, we still have the order record. We can reconcile using Razorpay's webhook or dashboard. The status updates to "paid" only after successful verification.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">11</span>What happens if the user has 0 credits and tries to start an interview?</div>
+            <div class="answer">The backend checks <code>user.credits &lt;= 0</code> before proceeding. It returns a <strong>403 Forbidden</strong> response with the message "Insufficient credits. Please purchase more." The frontend shows this error and displays a link to the pricing page. No interview document is created and no AI API call is made.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">12</span>How do you handle CORS?</div>
+            <div class="answer">The backend configures CORS with: <code>origin: process.env.CLIENT_URL</code> (restricts to our frontend domain), and <code>credentials: true</code> (allows cookies to be sent cross-origin). In development, the Vite proxy at <code>/api</code> also sidesteps CORS issues since the browser sees same-origin requests.</div>
+        </div>
+
+        <h3>⚛️ Frontend Questions</h3>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">13</span>Why Redux Toolkit instead of Context API?</div>
+            <div class="answer">Redux Toolkit offers: (1) <strong>Predictable state</strong> with a single store and immutable updates via Immer, (2) <strong>DevTools</strong> for time-travel debugging, (3) <strong>Better scalability</strong> — as the app grows with more features (notifications, settings), adding slices is clean, (4) <strong>Middleware support</strong> — for logging, async thunks, etc. Context API would cause unnecessary re-renders in deeply nested components like the interview chat.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">14</span>How do you persist user login across page refresh?</div>
+            <div class="answer">The Redux <code>userSlice</code> reads initial state from <code>localStorage</code>. When a user logs in, both the user object and JWT token are saved to localStorage. The slice's <code>initialState</code> does: <code>user: JSON.parse(localStorage.getItem('user'))</code>. On page refresh, Redux rehydrates from localStorage. The JWT in the HTTP-only cookie also persists, so API calls continue to work.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">15</span>What are Axios interceptors and how do you use them?</div>
+            <div class="answer"><strong>Request interceptor</strong>: Before every API call, it reads the JWT from localStorage and adds it as <code>Authorization: Bearer &lt;token&gt;</code> header. This avoids repeating auth logic in every API call. <strong>Response interceptor</strong>: On 401 responses, it clears localStorage and redirects to <code>/login</code>, handling token expiry globally without per-component logic.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">16</span>How does the ProtectedRoute component work?</div>
+            <div class="answer">It's a wrapper component that checks <code>useSelector(state =&gt; state.user.user)</code>. If no user exists in Redux state, it renders <code>&lt;Navigate to="/login" replace /&gt;</code> which redirects without adding to browser history. If a user exists, it renders the <code>{children}</code>. This pattern is called a <strong>route guard</strong> or <strong>higher-order component (HOC)</strong> pattern.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">17</span>How do you handle the chat-style interview UI?</div>
+            <div class="answer">The Interview page maintains a <code>feedbackHistory</code> state array. Each completed Q&A is pushed into this array and rendered as alternating "AI question" and "user answer" bubbles (like a chat). The current question is shown separately with a glowing animation. A <code>useRef</code> + <code>scrollIntoView</code> auto-scrolls to the latest message. <code>AnimatePresence</code> from Framer Motion adds enter/exit animations.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">18</span>What is the Vite proxy and why is it needed?</div>
+            <div class="answer">In development, the frontend runs on <code>:5173</code> and backend on <code>:8000</code>. Making API calls from <code>:5173</code> to <code>:8000</code> is cross-origin. The Vite proxy rewrites <code>/api/*</code> requests to <code>http://localhost:8000/api/*</code> at the dev server level, so the browser sees same-origin requests. This avoids CORS issues in development. In production, both would be served from the same domain.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">19</span>How does the animated circular score work on the Results page?</div>
+            <div class="answer">It uses <strong>SVG</strong> with <code>stroke-dasharray</code> and <code>stroke-dashoffset</code>. A circle is drawn with a circumference of <code>2πr</code>. The <code>dashoffset</code> controls how much of the circle is visible. Framer Motion's <code>motion.circle</code> animates the dashoffset from full (hidden) to the calculated value based on score percentage, creating the fill-up animation. The score text is positioned absolutely in the center.</div>
+        </div>
+
+        <h3>🔐 Security Questions</h3>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">20</span>How do you prevent CSRF attacks?</div>
+            <div class="answer">Multiple layers: (1) JWT is stored in an <strong>HTTP-only cookie</strong> with <code>SameSite</code> attribute, preventing cross-site cookie sending, (2) CORS is restricted to our frontend origin only, (3) The JWT is also sent via Authorization header (which can't be set by cross-site forms), (4) Razorpay uses HMAC signature verification for payment callbacks.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">21</span>Why HTTP-only cookies for JWT?</div>
+            <div class="answer">HTTP-only cookies <strong>cannot be accessed by JavaScript</strong> (<code>document.cookie</code> won't see them). This prevents XSS attacks from stealing the token. If an attacker injects a script, they can't read the JWT. We also store the token in localStorage for the Authorization header (a tradeoff for SPA convenience), but the cookie serves as the primary secure channel.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">22</span>How do you validate file uploads?</div>
+            <div class="answer">Three validation layers: (1) <strong>File type filter</strong>: Multer's <code>fileFilter</code> checks the extension is <code>.pdf</code>, (2) <strong>Size limit</strong>: <code>limits.fileSize: 5 * 1024 * 1024</code> rejects files over 5MB, (3) <strong>Server-side processing</strong>: The file never touches the disk — processed in memory and discarded. We don't serve uploaded files back to users, eliminating path traversal risks.</div>
+        </div>
+
+        <h3>📊 Database & Performance</h3>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">23</span>Why embed questions inside the Interview document instead of a separate collection?</div>
+            <div class="answer">Questions belong exclusively to one interview — there's <strong>no need to query them independently</strong>. Embedding avoids JOIN-like operations (<code>populate</code>). When we load an interview, we get all questions in a single read. MongoDB's document model is designed for this. The subdocument approach also provides atomicity — updating a question's score and the interview's progress happens in one <code>save()</code>.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">24</span>How would you scale this application for 10,000+ users?</div>
+            <div class="answer">Several approaches: (1) <strong>MongoDB Atlas auto-scaling</strong> with sharding on userId, (2) <strong>Redis caching</strong> for user credits and frequent reads, (3) <strong>Queue system</strong> (Bull/RabbitMQ) for AI processing — instead of synchronous Gemini calls, queue requests and poll for results, (4) <strong>Rate limiting</strong> on API endpoints, (5) <strong>CDN</strong> for the React build, (6) <strong>Horizontal scaling</strong> with PM2 cluster mode or Kubernetes.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">25</span>What indexes would you add for performance?</div>
+            <div class="answer">Key indexes: (1) <code>User.email</code> — unique, used in login lookup, (2) <code>User.firebaseUid</code> — unique, used in auth verification, (3) <code>Interview.userId + createdAt</code> — compound index for history queries sorted by date, (4) <code>Payment.orderId</code> — used in payment verification lookup. Mongoose automatically creates an index on <code>_id</code> and unique fields.</div>
+        </div>
+
+        <h3>🤖 AI & Prompt Engineering</h3>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">26</span>Why Google Gemini 2.0 Flash instead of GPT-4?</div>
+            <div class="answer">Gemini 2.0 Flash offers: (1) <strong>Fast inference</strong> — "Flash" models prioritize speed, ideal for real-time Q&A, (2) <strong>Cost-effective</strong> — significantly cheaper than GPT-4 for structured tasks, (3) <strong>Google ecosystem</strong> — easy integration with the official <code>@google/generative-ai</code> SDK, (4) <strong>Good enough</strong> — for interview question generation and answer evaluation, we don't need GPT-4's reasoning depth. The architecture is provider-agnostic — switching to OpenAI requires changing only <code>config/gemini.js</code>.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">27</span>How do you handle AI hallucinations or bad responses?</div>
+            <div class="answer">Multiple safeguards: (1) <strong>Structured prompts</strong> — we specify exact JSON format, reducing free-form output, (2) <strong>JSON parsing in try-catch</strong> — if parsing fails, we provide fallback values (default score of 5, generic feedback), (3) <strong>Score clamping</strong>: <code>Math.min(10, Math.max(0, score))</code> ensures scores stay in range even if AI returns outliers, (4) <strong>Prompt includes "return ONLY JSON"</strong> — repeated instruction reduces non-JSON output.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">28</span>What is prompt engineering and how did you use it here?</div>
+            <div class="answer">Prompt engineering is crafting input text to guide AI behavior. We use three techniques: (1) <strong>Role assignment</strong> — "You are an expert technical interviewer", (2) <strong>Output format specification</strong> — exact JSON structure with examples, (3) <strong>Context injection</strong> — resume text + job role provide personalization. The question generation prompt specifies the mix (6 technical + 2 behavioral + 2 HR) for diversity.</div>
+        </div>
+
+        <h3>🧪 Testing & Deployment</h3>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">29</span>How would you test this application?</div>
+            <div class="answer">Testing layers: (1) <strong>Unit tests</strong> (Jest) — test utility functions like <code>parseAIResponse</code>, prompt builders, credit calculations, (2) <strong>Integration tests</strong> (Supertest) — test API endpoints with a test database, mock Firebase/Gemini, (3) <strong>E2E tests</strong> (Cypress/Playwright) — test full user flows: login → upload → interview → results, (4) <strong>Manual testing</strong> — Razorpay test mode for payment verification.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">30</span>How would you deploy this to production?</div>
+            <div class="answer"><strong>Backend</strong>: Deploy to Render/Railway/AWS EC2 with environment variables configured. <strong>Frontend</strong>: Build with <code>npm run build</code>, deploy to Vercel/Netlify/Render. <strong>Database</strong>: MongoDB Atlas (already cloud-hosted). Key production changes: (1) Set <code>NODE_ENV=production</code>, (2) Enable HTTPS, (3) Update CORS origin to production domain, (4) Set cookie <code>secure: true, sameSite: 'none'</code>, (5) Add rate limiting.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">31</span>What challenges did you face and how did you solve them?</div>
+            <div class="answer">Key challenges: (1) <strong>AI response parsing</strong> — Gemini sometimes wraps JSON in markdown code blocks. Solution: regex-based stripping before JSON.parse. (2) <strong>PDF text extraction</strong> — pdf-parse's default import causes ESM issues. Solution: import from <code>pdf-parse/lib/pdf-parse.js</code> directly. (3) <strong>Real-time chat feel</strong> — maintaining scroll position and smooth animations while updating state. Solution: useRef + scrollIntoView + AnimatePresence.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">32</span>What would you improve if you had more time?</div>
+            <div class="answer">(1) <strong>Voice interview mode</strong> — speech-to-text for answers, text-to-speech for questions, (2) <strong>Webhook integration</strong> — Razorpay webhooks for payment reliability, (3) <strong>Admin dashboard</strong> — analytics on user activity, revenue, popular job roles, (4) <strong>Rate limiting</strong> — prevent API abuse, (5) <strong>Download report as PDF</strong> — generate interview results as downloadable PDF, (6) <strong>Mock interview scheduling</strong> — timed sessions with countdown, (7) <strong>WebSocket</strong> — for real-time AI streaming responses.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">33</span>Explain the credit system — how is it different from a subscription model?</div>
+            <div class="answer">Our <strong>credit-based (pay-per-use)</strong> model is like tokens: each interview costs 1 credit, and users buy credit packs (10 for ₹99, 25 for ₹199, 60 for ₹399). Benefits over subscription: (1) <strong>No recurring charges</strong> — users pay only when they need, (2) <strong>Lower barrier</strong> — 5 free credits let users try without commitment, (3) <strong>Volume discounts</strong> — bigger packs have lower per-credit cost, incentivizing bulk purchases. Credits never expire, stored as a simple integer in the User document.</div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">34</span>What is Glassmorphism and why did you use it?</div>
+            <div class="answer">Glassmorphism is a <strong>UI design trend</strong> featuring: frosted glass-like backgrounds using <code>backdrop-filter: blur()</code>, semi-transparent surfaces, subtle borders, and depth via layering. We used it because: (1) It creates a <strong>premium, modern feel</strong> appropriate for a SaaS product, (2) The translucent layers provide <strong>visual hierarchy</strong>, (3) Combined with our dark theme and glow effects, it creates an immersive experience. CSS: <code>background: rgba(26,26,62,0.6); backdrop-filter: blur(20px);</code></div>
+        </div>
+
+        <div class="qa-item">
+            <div class="question"><span class="qa-number">35</span>How does Express.js middleware chain work in this project?</div>
+            <div class="answer">Middleware executes in order: (1) <strong>CORS</strong> → validates origin, (2) <strong>express.json()</strong> → parses JSON body, (3) <strong>cookieParser()</strong> → parses cookies, (4) <strong>Route-level middleware</strong>: <code>auth</code> (JWT check) → <code>upload.single('resume')</code> (file processing) → controller function. Each calls <code>next()</code> to pass control. If any middleware returns a response (like 401), the chain stops. Error middleware at the end catches unhandled errors.</div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div style="text-align: center; padding: 40px 0 20px; border-top: 2px solid var(--border); margin-top: 40px; color: var(--text-light); font-size: 12px;">
+        <p><strong>InterviewIQ</strong> — AI Interview Preparation Platform</p>
+        <p>MERN Stack | React + Vite + Tailwind | Express + MongoDB | Firebase + Gemini AI + Razorpay</p>
+        <p style="margin-top: 8px;">Document generated for interview preparation. © 2026</p>
+    </div>
+
+</div>
+
+</body>
+</html>
