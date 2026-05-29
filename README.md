@@ -29,8 +29,15 @@
 | 📊 **Smart Scoring** | Score per question (0-10) + overall score (0-100) + strengths & improvements |
 | 💰 **Credit System** | 5 free credits on signup, buy more via Razorpay (₹99 / ₹199 / ₹399 packs) |
 | 💳 **Razorpay Payments** | Secure payment integration with HMAC-SHA256 signature verification |
-| 🎨 **Premium Dark UI** | Glassmorphism design with Framer Motion animations |
-| 📱 **Fully Responsive** | Works on desktop, tablet, and mobile |
+| 🎨 **Premium Dark/Light UI** | Glassmorphism design with dark/light mode toggle & Framer Motion animations |
+| ✨ **Particle Background** | Interactive particle effects on hero section with mouse-grab interaction |
+| ⌨️ **Typewriter Effect** | Dynamic hero heading cycling through different interview types |
+| 📈 **Score Trends Chart** | Recharts area chart showing interview score progression over time |
+| ⏱️ **Timed Interview Mode** | Optional countdown timer per question (30s / 60s / 90s / 2min) |
+| 🎤 **Voice Input** | Speech-to-text via Web Speech API — speak your answers |
+| 📥 **PDF Download** | Download interview results as a styled PDF report |
+| 📧 **Email Results** | Send interview results to your email with a beautiful HTML template |
+| 📱 **PWA Ready** | Installable on mobile, offline-capable with service worker |
 
 ---
 
@@ -47,6 +54,10 @@
 | **Axios** | HTTP client with interceptors |
 | **React Router v6** | Client-side routing |
 | **React Hot Toast** | Toast notifications |
+| **Recharts** | Dashboard score trend charts |
+| **tsParticles** | Interactive particle backgrounds |
+| **Typewriter Effect** | Dynamic typing animation |
+| **html2pdf.js** | PDF report generation |
 
 ### Backend
 | Technology | Purpose |
@@ -60,6 +71,7 @@
 | **Multer** | PDF file upload handling |
 | **pdf-parse** | PDF text extraction |
 | **JWT** | API authentication tokens |
+| **Nodemailer** | Email results to users |
 
 ---
 
@@ -279,9 +291,15 @@ Powered by **Google Gemini 2.0 Flash** with 3 structured prompts:
 
 ## 🗺️ Future Enhancements
 
-- [ ] 🎙️ Voice interview mode (speech-to-text)
-- [ ] 📥 Download results as PDF report
-- [ ] ⏱️ Timed interview sessions
+- [x] ✨ Particle background on hero section
+- [x] ⌨️ Typewriter effect on hero heading
+- [x] 🌙 Light/Dark mode toggle
+- [x] 📈 Dashboard score trend charts
+- [x] 📥 Download results as PDF report
+- [x] ⏱️ Timed interview mode
+- [x] 🎤 Voice interview mode (Web Speech API)
+- [x] 📧 Email results via Nodemailer
+- [x] 📱 PWA support (installable + offline)
 - [ ] 🔔 Razorpay webhook integration
 - [ ] 📊 Admin analytics dashboard
 - [ ] 🌐 Deploy on Render / Vercel
