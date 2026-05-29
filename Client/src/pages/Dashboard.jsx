@@ -9,7 +9,9 @@ import {
     HiOutlineSparkles,
     HiOutlineDocumentText,
     HiOutlineUpload,
+    HiOutlineTrendingUp,
 } from 'react-icons/hi';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import API from '../utils/api';
@@ -171,6 +173,77 @@ const Dashboard = () => {
                         </div>
                     ))}
                 </motion.div>
+
+                {/* Score Trends Chart */}
+                {interviews.filter(i => i.status === 'completed').length >= 2 && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.15, duration: 0.5 }}
+                        className="glass-card mb-10"
+                        style={{ padding: '24px' }}
+                    >
+                        <h3 className="flex items-center gap-2" style={{ fontSize: '1rem', fontWeight: 600, marginBottom: '20px' }}>
+                            <HiOutlineTrendingUp size={20} style={{ color: 'var(--primary-400)' }} />
+                            Score Trends
+                        </h3>
+                        <ResponsiveContainer width="100%" height={220}>
+                            <AreaChart
+                                data={interviews
+                                    .filter(i => i.status === 'completed')
+                                    .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+                                    .slice(-10)
+                                    .map(i => ({
+                                        name: new Date(i.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+                                        score: i.overallScore,
+                                        role: i.jobRole,
+                                    }))
+                                }
+                                margin={{ top: 5, right: 10, left: -20, bottom: 5 }}
+                            >
+                                <defs>
+                                    <linearGradient id="scoreGradient" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3} />
+                                        <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
+                                    </linearGradient>
+                                </defs>
+                                <CartesianGrid strokeDasharray="3 3" stroke="rgba(99,102,241,0.1)" />
+                                <XAxis
+                                    dataKey="name"
+                                    tick={{ fill: 'var(--text-muted)', fontSize: 11 }}
+                                    axisLine={{ stroke: 'rgba(99,102,241,0.15)' }}
+                                    tickLine={false}
+                                />
+                                <YAxis
+                                    domain={[0, 100]}
+                                    tick={{ fill: 'var(--text-muted)', fontSize: 11 }}
+                                    axisLine={{ stroke: 'rgba(99,102,241,0.15)' }}
+                                    tickLine={false}
+                                />
+                                <Tooltip
+                                    contentStyle={{
+                                        background: 'var(--bg-card)',
+                                        border: '1px solid var(--border-accent)',
+                                        borderRadius: '10px',
+                                        color: 'var(--text-primary)',
+                                        fontSize: '0.85rem',
+                                    }}
+                                    formatter={(value, name, props) => [`${value}%`, props.payload.role]}
+                                    labelStyle={{ color: 'var(--text-muted)', marginBottom: '4px' }}
+                                />
+                                <Area
+                                    type="monotone"
+                                    dataKey="score"
+                                    stroke="#6366f1"
+                                    strokeWidth={2.5}
+                                    fill="url(#scoreGradient)"
+                                    dot={{ r: 4, fill: '#6366f1', strokeWidth: 2, stroke: 'var(--bg-card)' }}
+                                    activeDot={{ r: 6, fill: '#818cf8', strokeWidth: 2, stroke: 'white' }}
+                                />
+                            </AreaChart>
+                        </ResponsiveContainer>
+                    </motion.div>
+                )}
 
                 {/* Interview History */}
                 <motion.div
