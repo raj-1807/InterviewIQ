@@ -30,6 +30,7 @@ const Dashboard = () => {
     const [jobRole, setJobRole] = useState('');
     const [resumeFile, setResumeFile] = useState(null);
     const [starting, setStarting] = useState(false);
+    const [timerSeconds, setTimerSeconds] = useState(0);
 
     useEffect(() => {
         fetchInterviews();
@@ -71,7 +72,7 @@ const Dashboard = () => {
                 dispatch(setCurrentInterview(res.data.interview));
                 dispatch(updateCredits(res.data.remainingCredits));
                 toast.success('Interview started!');
-                navigate(`/interview/${res.data.interview._id}`);
+                navigate(`/interview/${res.data.interview._id}`, { state: { timerSeconds } });
             }
         } catch (err) {
             toast.error(err.response?.data?.message || 'Failed to start interview');
@@ -386,6 +387,41 @@ const Dashboard = () => {
                                 onFocus={e => e.target.style.borderColor = 'var(--primary-500)'}
                                 onBlur={e => e.target.style.borderColor = 'var(--border-accent)'}
                             />
+                        </div>
+
+                        {/* Timer Selector */}
+                        <div style={{ marginBottom: '20px' }}>
+                            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, marginBottom: '8px', color: 'var(--text-secondary)' }}>
+                                ⏱️ Time per Question
+                            </label>
+                            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                                {[
+                                    { label: 'No Limit', value: 0 },
+                                    { label: '30s', value: 30 },
+                                    { label: '1 min', value: 60 },
+                                    { label: '90s', value: 90 },
+                                    { label: '2 min', value: 120 },
+                                ].map(opt => (
+                                    <button
+                                        key={opt.value}
+                                        type="button"
+                                        onClick={() => setTimerSeconds(opt.value)}
+                                        style={{
+                                            padding: '8px 16px',
+                                            borderRadius: '10px',
+                                            fontSize: '0.8rem',
+                                            fontWeight: 600,
+                                            cursor: 'pointer',
+                                            border: timerSeconds === opt.value ? '2px solid var(--primary-500)' : '1px solid var(--border-accent)',
+                                            background: timerSeconds === opt.value ? 'rgba(99, 102, 241, 0.15)' : 'transparent',
+                                            color: timerSeconds === opt.value ? 'var(--primary-400)' : 'var(--text-secondary)',
+                                            transition: 'all 0.2s ease',
+                                        }}
+                                    >
+                                        {opt.label}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
 
                         {/* Resume Upload */}

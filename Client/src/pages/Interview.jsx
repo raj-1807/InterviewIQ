@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
-import { HiOutlinePaperAirplane, HiOutlineSparkles, HiOutlineClock } from 'react-icons/hi';
+import { HiOutlinePaperAirplane, HiOutlineSparkles, HiOutlineClock, HiOutlineMicrophone } from 'react-icons/hi';
 import Navbar from '../components/Navbar';
 import API from '../utils/api';
 import { setCurrentInterview } from '../store/interviewSlice';
@@ -11,6 +11,7 @@ import toast from 'react-hot-toast';
 const Interview = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state.user);
 
@@ -22,6 +23,15 @@ const Interview = () => {
     const [feedbackHistory, setFeedbackHistory] = useState([]);
     const [completing, setCompleting] = useState(false);
     const chatEndRef = useRef(null);
+
+    // Timer state
+    const timerLimit = location.state?.timerSeconds || 0; // 0 = no limit
+    const [timeLeft, setTimeLeft] = useState(timerLimit);
+    const timerRef = useRef(null);
+
+    // Voice state
+    const [isListening, setIsListening] = useState(false);
+    const recognitionRef = useRef(null);
 
     useEffect(() => {
         fetchInterview();
@@ -103,6 +113,75 @@ const Interview = () => {
         }
     };
 
+    // Timer effect: restart on each new question
+    useEffect(() => {
+        if (timerLimit > 0 && !isAllAnswered) {
+            setTimeLeft(timerLimit);
+            clearInterval(timerRef.current);
+            timerRef.current = setInterval(() => {
+                setTimeLeft(prev => {
+                    if (prev <= 1) {
+                        clearInterval(timerRef.current);
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+            return () => clearInterval(timerRef.current);
+        }
+    }, [currentIdx, timerLimit]);
+
+    // Auto-submit when timer hits 0
+    useEffect(() => {
+        if (timerLimit > 0 && timeLeft === 0 && !submitting && !isAllAnswered) {
+            toast('⏰ Time\'s up! Auto-submitting...');
+            if (answer.trim()) {
+                handleSubmitAnswer();
+            } else {
+                setAnswer('No answer provided (time expired)');
+                setTimeout(() => handleSubmitAnswer(), 100);
+            }
+        }
+    }, [timeLeft]);
+
+    // Voice recognition
+    const toggleVoice = useCallback(() => {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) {
+            toast.error('Voice input not supported in this browser. Use Chrome.');
+            return;
+        }
+
+        if (isListening) {
+            recognitionRef.current?.stop();
+            setIsListening(false);
+            return;
+        }
+
+        const recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+
+        recognition.onresult = (event) => {
+            let transcript = '';
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                transcript += event.results[i][0].transcript;
+            }
+            setAnswer(prev => {
+                const base = prev.endsWith(' ') ? prev : prev ? prev + ' ' : '';
+                return base + transcript;
+            });
+        };
+
+        recognition.onerror = () => setIsListening(false);
+        recognition.onend = () => setIsListening(false);
+
+        recognitionRef.current = recognition;
+        recognition.start();
+        setIsListening(true);
+    }, [isListening]);
+
     const handleCompleteInterview = async () => {
         try {
             setCompleting(true);
@@ -148,6 +227,31 @@ const Interview = () => {
                             </p>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                            {/* Timer */}
+                            {timerLimit > 0 && !isAllAnswered && (
+                                <div className="flex items-center gap-2" style={{
+                                    padding: '6px 14px',
+                                    borderRadius: '10px',
+                                    background: timeLeft <= 10 ? 'rgba(239, 68, 68, 0.15)' : 'rgba(99, 102, 241, 0.1)',
+                                    border: `1px solid ${timeLeft <= 10 ? 'rgba(239, 68, 68, 0.3)' : 'var(--border-accent)'}`,
+                                    transition: 'all 0.3s ease',
+                                }}>
+                                    <HiOutlineClock size={16} style={{ color: timeLeft <= 10 ? '#ef4444' : 'var(--primary-400)' }} />
+                                    <motion.span
+                                        key={timeLeft}
+                                        initial={{ scale: 1.2 }}
+                                        animate={{ scale: 1 }}
+                                        style={{
+                                            fontSize: '0.9rem',
+                                            fontWeight: 700,
+                                            fontFamily: 'var(--font-display)',
+                                            color: timeLeft <= 10 ? '#ef4444' : 'var(--primary-400)',
+                                        }}
+                                    >
+                                        {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, '0')}
+                                    </motion.span>
+                                </div>
+                            )}
                             {/* Progress Bar */}
                             <div style={{
                                 width: '120px',
@@ -323,7 +427,7 @@ const Interview = () => {
                             <textarea
                                 value={answer}
                                 onChange={(e) => setAnswer(e.target.value)}
-                                placeholder="Type your answer here..."
+                                placeholder="Type your answer here... or use the mic 🎙️"
                                 rows={3}
                                 style={{
                                     flex: 1,
@@ -346,6 +450,46 @@ const Interview = () => {
                                 }}
                                 disabled={submitting}
                             />
+                            {/* Voice Button */}
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={toggleVoice}
+                                title={isListening ? 'Stop listening' : 'Start voice input'}
+                                style={{
+                                    alignSelf: 'flex-end',
+                                    width: '44px',
+                                    height: '44px',
+                                    borderRadius: '12px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    border: isListening ? '2px solid #ef4444' : '1px solid var(--border-accent)',
+                                    background: isListening ? 'rgba(239, 68, 68, 0.15)' : 'rgba(99, 102, 241, 0.1)',
+                                    cursor: 'pointer',
+                                    color: isListening ? '#ef4444' : 'var(--primary-400)',
+                                    transition: 'all 0.3s ease',
+                                    flexShrink: 0,
+                                    position: 'relative',
+                                    overflow: 'hidden',
+                                }}
+                            >
+                                <HiOutlineMicrophone size={18} />
+                                {isListening && (
+                                    <motion.div
+                                        animate={{ scale: [1, 1.5, 1] }}
+                                        transition={{ repeat: Infinity, duration: 1.5 }}
+                                        style={{
+                                            position: 'absolute',
+                                            inset: 0,
+                                            borderRadius: '12px',
+                                            border: '2px solid #ef4444',
+                                            opacity: 0.4,
+                                        }}
+                                    />
+                                )}
+                            </motion.button>
+                            {/* Submit Button */}
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
